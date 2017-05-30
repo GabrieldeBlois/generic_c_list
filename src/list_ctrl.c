@@ -1,12 +1,24 @@
+/*
+** list_ctrl.c for list in /home/gaby/Documents/dev/generic_c_list
+**
+** Made by gaby
+** Login   <gabriel.de-blois@epitech.eu>
+**
+** Started on  Tue May 30 17:05:03 2017 gaby
+** Last update Tue May 30 17:05:04 2017 gaby
+*/
+
 #include "list_ctrl.h"
 
 __inline__
-void list_ctrl_push_front(t_list_ctrl *list, t_list *node) {
+void list_ctrl_push_front(t_list_ctrl *list, t_list *node)
+{
     list->head = list_push_front(list->head, node);
 }
 
 __inline__
-void list_ctrl_push_back(t_list_ctrl *list, t_list *node) {
+void list_ctrl_push_back(t_list_ctrl *list, t_list *node)
+{
     if (!list->head)
     {
         node->prev = NULL;
@@ -24,7 +36,8 @@ void list_ctrl_push_back(t_list_ctrl *list, t_list *node) {
 }
 
 __inline__
-void list_ctrl_pop_front(t_list_ctrl *list, t_free_func func) {
+void list_ctrl_pop_front(t_list_ctrl *list, t_free_func func)
+{
     t_list *tmp;
 
     if (!list->head)
@@ -39,7 +52,8 @@ void list_ctrl_pop_front(t_list_ctrl *list, t_free_func func) {
 }
 
 __inline__
-void list_ctrl_pop_back(t_list_ctrl *list, t_free_func func) {
+void list_ctrl_pop_back(t_list_ctrl *list, t_free_func func)
+{
     t_list *tmp;
 
     if (!list->tail)
@@ -57,7 +71,8 @@ void list_ctrl_pop_back(t_list_ctrl *list, t_free_func func) {
 }
 
 __inline__
-size_t list_ctrl_len(t_list_ctrl *list) {
+size_t list_ctrl_len(t_list_ctrl *list)
+{
     int i;
     t_list *tmp;
 
