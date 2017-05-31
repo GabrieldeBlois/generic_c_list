@@ -8,6 +8,7 @@
 ** Last update Tue May 30 16:56:12 2017 gaby
 */
 
+#include <stdio.h>
 #include "list.h"
 
 __inline__ t_list*
@@ -30,10 +31,12 @@ list_push_front(t_list* list, t_list* node)
     return (list);
   node->prev = NULL;
   node->next = list;
+  if (list)
+    list->prev = node;
   return (node);
 }
 
-__inline__ t_list*
+t_list*
 list_push_back(t_list* list, t_list* node)
 {
   t_list* tmp;
@@ -47,7 +50,7 @@ list_push_back(t_list* list, t_list* node)
   return (node->prev = tmp, node->next = NULL, list);
 }
 
-__inline__ t_list*
+t_list*
 list_pop_front(t_list* list, t_free_func func)
 {
   t_list* tmp;
@@ -59,7 +62,7 @@ list_pop_front(t_list* list, t_free_func func)
   return (tmp);
 }
 
-__inline__ t_list*
+t_list*
 list_pop_back(t_list* list, t_free_func func)
 {
   t_list* tmp;
@@ -186,7 +189,70 @@ void list_foreach(t_list *list, t_foreach_func func)
 {
   while (list)
   {
-    func(list->data);
+      func(list->data);
+      list = list->next;
+  }
+}
+
+void list_foreach_until(t_list *list, t_foreach_until_func func)
+{
+  while (list)
+  {
+    if (!func(list->data))
+      return ;
+    if (list)
+      list = list->next;
+  }
+}
+
+t_list *list_delete_node(t_list *list, t_list *node, t_free_func func)
+{
+  list_dump_addresses(list, "before list delete node");
+  if (!node->prev)
+  {
+    list = list->next;
+    if (list)
+      list->prev = NULL;
+    list_freenode(node, func);
+    
+    list_dump_addresses(list, "after list delete addresses");
+    return (list);
+  }
+  node->prev->next = node->next;
+  if (node->next)
+    node->next->prev = node->prev;
+  list_freenode(node, func);
+  return (list);
+}
+
+t_list *list_delete_from_data(t_list *list, void *todelete, t_free_func func)
+{
+  t_list *tmp;
+
+  tmp = list;
+  while (tmp)
+  {
+    if (tmp->data == todelete)
+    {
+      return (list_delete_node(list, tmp, func));
+    }
+    tmp = tmp->next;
+  }
+  return (list);
+}
+
+void list_dump_addresses(t_list *list, char *customdebug)
+{
+  int i;
+
+  if (customdebug)
+  {
+    printf("\n%s - - - - - - - - - - - - -\n", customdebug);
+  }
+  i = 0;
+  while (list)
+  {
+    printf("node %4d: %p <- %p -> %p\n", i++, list->prev, list, list->next);
     list = list->next;
   }
 }

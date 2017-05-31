@@ -27,6 +27,11 @@ typedef void	(*t_display_func)(void *);
 typedef void	(*t_free_func)(void *);
 typedef int (*t_comparison_func)(void* d1, void* d2);
 typedef void (*t_foreach_func)(void *);
+typedef int (*t_foreach_until_func)(void *);
+
+t_list *list_delete_node(t_list *list, t_list *node, t_free_func);
+t_list *list_delete_from_data(t_list *list, void *todelete, t_free_func func);
+
 
 /*
 **	creates a new node of type t_list from a data as void*
@@ -139,5 +144,13 @@ t_list		*list_concat(t_list *l1,
 */
 
 void 		list_foreach(t_list *, t_foreach_func func);
+
+/*
+**	foreach_until does the same thing as foreach until the function pointer executed returns 0 (false);
+*/
+
+void 		list_foreach_until(t_list *, t_foreach_until_func func);
+
+void list_dump_addresses(t_list *list, char *customdebug);
 
 #endif /* guards */

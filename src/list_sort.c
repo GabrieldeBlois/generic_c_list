@@ -24,18 +24,6 @@ new_tree_node(t_list* node)
   return (tmp);
 }
 
-static t_list_sort*
-add_to_tree_recur(t_list_sort* root, t_list* node, t_comparison_func func)
-{
-  if (!root)
-    return new_tree_node(node);
-  else if (func(root->node->data, node->data) <= 0)
-    root->left = add_to_tree_recur(root->left, node, func);
-  else
-    root->right = add_to_tree_recur(root->right, node, func);
-  return (root);
-}
-
 __inline__ static void
 add_to_tree(t_list_sort** root, t_list* node, t_comparison_func func)
 {
